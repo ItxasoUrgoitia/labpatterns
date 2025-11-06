@@ -1,8 +1,11 @@
 package adapter2;
 
+import java.util.Iterator;
+
 import javax.swing.table.AbstractTableModel;
 
 import domain.Covid19Pacient;
+import domain.Symptom;
 
 public class Covid19PacientTableModelAdapter extends AbstractTableModel {
 	  protected Covid19Pacient pacient;
@@ -15,21 +18,48 @@ public class Covid19PacientTableModelAdapter extends AbstractTableModel {
 
 	  public int getColumnCount() {
 	    // Challenge!
-		 return 1;
+		 return columnNames.length;
 	  }
 
 	  public String getColumnName(int i) {
 	    // Challenge!
-		  return "Column name 1";
+		  return columnNames[i];
 	  }
 
 	  public int getRowCount() {
 	    // Challenge!
-		  return 1;
+		  return pacient.getSymptoms().size();
 	  }
 
 	  public Object getValueAt(int row, int col) {
 	    // Challenge!
-		  return "value";
+		  if (row < 0 || row >= getRowCount() || col < 0 || col >= getColumnCount()) {
+	            return null;
+	        }
+	        
+	        Iterator<Symptom> iterator = pacient.getSymptoms().iterator();
+	        Symptom symptom = null;
+	        
+	        // Lortu errenkadako sintoma
+	        for (int i = 0; i <= row; i++) {
+	            if (iterator.hasNext()) {
+	                symptom = iterator.next();
+	            }
+	        }
+	        
+	        if (symptom == null) {
+	            return null;
+	        }
+	        
+	        // Itzuli zutabeko balioa
+	        switch (col) {
+	            case 0: // Symptom zutabea
+	                return symptom.getName();
+	            case 1: // Weight zutabea
+	                return pacient.getWeight(symptom);
+	            default:
+	                return null;
+	                
+	        }
 	  }
 	}

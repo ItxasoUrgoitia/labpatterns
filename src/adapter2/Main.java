@@ -5,6 +5,7 @@ import domain.Covid19Pacient;
 public class Main {
 
 	public static void main(String[] args) {
+		
 		Covid19Pacient pacient=new Covid19Pacient("aitor", 35);
 		
 		pacient.addSymptomByName("disnea", 2);
@@ -14,7 +15,19 @@ public class Main {
 		ShowPacientTableGUI gui=new ShowPacientTableGUI(pacient);
 		gui.setPreferredSize(
 			      new java.awt.Dimension(300, 200));
+		gui.setSize(600, 400);
 		gui.setVisible(true);
+		
+		Covid19Pacient pacient2=new Covid19Pacient("itxaso", 19);
+		
+		pacient2.addSymptomByName("fiebre", 1);
+		pacient2.addSymptomByName("nauseas", 2);
+		
+		ShowPacientTableGUI gui2=new ShowPacientTableGUI(pacient2);
+		gui2.setPreferredSize(
+			      new java.awt.Dimension(300, 200));
+		gui2.setSize(600, 400);
+		gui2.setVisible(true);
 
 
 	}
