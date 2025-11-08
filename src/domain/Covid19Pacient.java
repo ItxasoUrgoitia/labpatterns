@@ -8,12 +8,15 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.Set;
 import iterator.Covid19PacientIterator;
+import factory.*;
 
-public class Covid19Pacient {
+
+public class Covid19Pacient extends Observable {
 	private String  name; 
 	private int age;
 	private Map<Symptom,Integer> symptoms=new HashMap<Symptom,Integer>();
-
+	private iFactory sf = new SymptomFactory();
+	
 	public Covid19Pacient(String name, int years) {
 		this.name = name;
 		this.age = years;
@@ -55,16 +58,26 @@ public class Covid19Pacient {
 	
 	public Symptom addSymptomByName(String symptom, Integer w){
 		Symptom s=null;
-		s=createSymptom(symptom); 
-		if (s!=null) 
-			symptoms.put(s,w);		
+		s=sf.createSymptom(symptom); 
+		System.out.println("Simptom added 1: "+s);
+
+		if (s!=null) { 
+			symptoms.put(s,w);
+			System.out.println("Simptom added 2: "+s);
+			setChanged();
+			notifyObservers(s);
+		}
 		return s;
 	}
 
 	public Symptom removeSymptomByName(String symptomName) {
 		Symptom s=getSymptomByName(symptomName);
 		System.out.println("Simptom to remove: "+s);
-		if (s!=null) symptoms.remove(s);
+		if (s!=null) {
+			symptoms.remove(s);
+			setChanged();
+			notifyObservers(s);
+		}
 		return s;
 	}
 	public Iterator iterator() {
@@ -88,10 +101,13 @@ public class Covid19Pacient {
 		
 		//calculate impact
 		impact=afection+increment;
+		
+		setChanged();
+		notifyObservers(impact);
 		return impact;
 	}
 	
-	private Symptom createSymptom(String symptomName) {
+	/*private Symptom createSymptom(String symptomName) {
 	    List<String> impact5 = Arrays.asList("fiebre", "tos seca", "astenia","expectoracion");
 	    List<Double> index5 = Arrays.asList(87.9, 67.7, 38.1, 33.4);
 	    List<String> impact3 = Arrays.asList("disnea", "dolor de garganta", "cefalea","mialgia","escalofrios");
@@ -117,6 +133,6 @@ public class Covid19Pacient {
 	    }
 	    return null;		
 		
-	}
+	}*/
 }
 
