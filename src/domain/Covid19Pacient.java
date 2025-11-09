@@ -15,7 +15,7 @@ public class Covid19Pacient extends Observable {
 	private String  name; 
 	private int age;
 	private Map<Symptom,Integer> symptoms=new HashMap<Symptom,Integer>();
-	private iFactory sf = new SymptomFactory();
+	private iFactory sf = SymptomFactory.getInstance();
 	
 	public Covid19Pacient(String name, int years) {
 		this.name = name;

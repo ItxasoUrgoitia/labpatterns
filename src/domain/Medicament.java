@@ -11,7 +11,7 @@ import factory.*;
 public class Medicament {
 	private String name;
 	private List<Symptom> symptoms=new ArrayList<Symptom>();
-	private iFactory sf = new SymptomFactory();
+	private iFactory sf = SymptomFactory.getInstance();
 
 	public String getName() {
 		return name;

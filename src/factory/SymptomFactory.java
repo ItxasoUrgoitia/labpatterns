@@ -1,7 +1,9 @@
 package factory;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import domain.DigestiveSymptom;
 import domain.NeuroMuscularSymptom;
@@ -9,8 +11,24 @@ import domain.RespiratorySymptom;
 import domain.Symptom;
 
 public class SymptomFactory implements iFactory {
+	
+    private static SymptomFactory instance;
+    private Map<String, Symptom> symptomG;
+    private SymptomFactory() {
+        symptomG = new HashMap<>();
+    }
+    public static synchronized SymptomFactory getInstance() {
+        if (instance == null) {
+            instance = new SymptomFactory();
+        }
+        return instance;
+    }
+	
 	 @Override
 	 public Symptom createSymptom(String symptomName) {
+		 	if (symptomG.containsKey(symptomName)) {
+	            return symptomG.get(symptomName);
+	        }
 			System.out.println("Simptom name aaa: "+symptomName);
 
 		    List<String> impact5 = Arrays.asList("fiebre", "tos seca", "astenia","expectoracion");
@@ -30,7 +48,9 @@ public class SymptomFactory implements iFactory {
 		    if (impact5.contains(symptomName)) {impact=5; index= index5.get(impact5.indexOf(symptomName));}
 		      else if (impact3.contains(symptomName)) {impact=3;index= index3.get(impact3.indexOf(symptomName));}
 		        else if (impact1.contains(symptomName)) {impact=1; index= index1.get(impact1.indexOf(symptomName));}
-		 
+		    
+		    Symptom symptom = null;
+		    
 		    if (impact!=0)  {
 		    	if (digestiveSymptom.contains(symptomName)) return new DigestiveSymptom(symptomName,(int)index, impact);
 		    	if (neuroMuscularSymptom.contains(symptomName)) {
@@ -38,8 +58,13 @@ public class SymptomFactory implements iFactory {
 		    		return new NeuroMuscularSymptom(symptomName,(int)index, impact);
 		    	}
 		    	if (respiratorySymptom.contains(symptomName)) return new RespiratorySymptom(symptomName,(int)index, impact);
+		    	
+		    	if (symptom != null) {
+	                symptomG.put(symptomName, symptom);
+	            }
 		    }
-		    return null;		
+		    
+		    return symptom;		
 			
 		}
 	 
